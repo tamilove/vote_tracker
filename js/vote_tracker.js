@@ -1,12 +1,10 @@
-
 var Tracker = function () {
   this.kitty = [];
   this.player = [0,0];
 };
 
 Tracker.prototype.Contest = function() {
-  document.getElementById('player1').removeChild(document.getElementById('player1').firstChild);
-  document.getElementById('player2').removeChild(document.getElementById('player2').firstChild);
+  $('.cat_pic').children().remove();
   this.pickPlayers();
   this.getVote();
 };
@@ -17,25 +15,21 @@ Tracker.prototype.pickPlayers = function() {
     this.player[0] = Math.floor(Math.random()*14);
     this.player[1] = Math.floor(Math.random()*14);
   }
-  leftPicBox = document.createElement('div');
-  leftPicBox.innerHTML = "<img id=\"left\" src=\"images/" + this.player[0] + ".jpg\"/>";
-  document.getElementById('player1').appendChild(leftPicBox);
-  rightPicBox = document.createElement('div');
-  rightPicBox.innerHTML = "<img id=\"right\" src=\"images/" + this.player[1] + ".jpg\"/>";
-  document.getElementById('player2').appendChild(rightPicBox);
+  $('#player1').append("<img id=\"left\" src=\"images/" + this.player[0] + ".jpg\"/><br><br><p>Cat number " + (this.player[0] + 1) + "</p>");
+  $('#player2').append("<img id=\"right\" src=\"images/" + this.player[1] + ".jpg\"/><br><br><p>Cat number " + (this.player[1] + 1) + "</p>");
 return this.player;
 };
 
 Tracker.prototype.getVote = function () {
-  document.getElementById('left').addEventListener('click', function() {
+  $('#left').on({'click': function() {
     play.kitty[play.player[0]]++;
     console.log ("after click L", play.kitty);
-    play.Contest();
+    play.Contest(); }
   });
-  document.getElementById('right').addEventListener('click', function() {
+  $('#right').on({'click': function() {
     play.kitty[play.player[1]] ++;
     console.log ("after click R", play.kitty);
-    play.Contest();
+    play.Contest(); }
   });
 // bar chart data
   var barData = {
@@ -49,11 +43,10 @@ Tracker.prototype.getVote = function () {
       ]
   }
   // get bar chart canvas
-  var cats = document.getElementById("cats").getContext("2d");
+  var cats = $("#cats")[0].getContext("2d");
   // draw bar chart
   new Chart(cats).Bar(barData);
 };
-
 
 var play = new Tracker();
 for (var i=0; i<14; i++) {
