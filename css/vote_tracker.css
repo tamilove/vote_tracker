@@ -19,18 +19,36 @@ body {
   background: #444;
 }
 
-.cat_pic{
-
+.cat_pic:hover {
+    -ms-transform: scale(1.25,1.25);
+    -webkit-transform: scale(1.25,1.25);
+    transform: scale(1.25,1.25);
+    transition: .5s ease-in-out;
+}
+.cat_pic {
+  -webkit-transition: -webkit-transform .8s ease-in-out;
+  transition: transform .8s ease-in-out;
 }
 
 .chart{
-
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #player1 {
   float: left;
+  position: relative;
+  margin-left: 100px;
+  margin-top: 100px;
 }
 
 #player2 {
   float: right;
+  position: relative;
+  margin-right: 100px;
+  margin-top: 100px;
+}
+
+#cats {
+  position: absolute;
 }
