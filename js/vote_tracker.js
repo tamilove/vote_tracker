@@ -1,86 +1,85 @@
-//var kitty = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-var kitty = [];
-for (i=0; i<14; i++) {
-  kitty[i] = 0;
-};
-var player = [];
-var fight;
-var Tracker = function(){
-
+var Tracker = function () {
+  this.gameOn;
+  this.kitty = [];
+  this.player = [0,0];
+  this.victor = "";
 };
 
-var leftVictor = function() {
-  fight = false;
-  kitty[player[0]]++ ;
-  console.log(kitty);
-  while (leftPicPlace.firstChild) {
-    leftPicPlace.removeChild(leftPicPlace.firstChild);
+//game routine
+Tracker.prototype.Contest = function() {
+//clear scores (set up array)
+  for (i=0; i<14; i++) {
+    this.kitty[i] = 0;
   };
-  while (rightPicPlace.firstChild) {
-    rightPicPlace.removeChild(rightPicPlace.firstChild);
+  console.log("array set up");
+  for (var i = 0; i < 14; i++) {
+    if (this.kitty[i] > 9) {
+      this.gameOn = false;
+      console.log("game ends");
+    } 
   };
-  beginTurn();
+  console.log("checkpoint");
+  this.score();
+  console.log("score checked");
+  this.pickPlayers();
+  console.log("players picked");
+  this.showCats();
+  console.log("cats have been shown");
+  this.getVote();
+  console.log(this.kitty);
 };
 
-var rightVictor = function() {
-  fight = false;
-  kitty[player[1]]++ ;
-  console.log(kitty);
-  beginTurn();
+//See if a cat just scored and track it
+Tracker.prototype.score = function(victor) {
+  };
+  console.log("score was checked")
+  //clear pictures if they are up
+  //console.log(this.kitty);
+  // this.leftPicPlace = document.getElementById('player1');
+  // this.leftPicBox = document.createElement('div');
+  // this.rightPicPlace = document.getElementById('player2');
+  // this.rightPicBox = document.createElement('div');
+  while (document.getElementById('player1').firstChild) {
+    document.getElementById('player1').removeChild(document.getElementById('player1').firstChild);
+  };
+  while (document.getElementById('player2').firstChild) {
+    document.getElementById('player2').removeChild(document.getElementById('player2').firstChild);
+  // }
+  // console.log(this.victor);
+  // return this.victor;
 };
 
-var victor
-
-
-beginTurn = function() {
-   player = [0,0];
-
-  while (player[0] == player[1]) {
-    player[0] = Math.floor(Math.random()*14);
-    player[1] = Math.floor(Math.random()*14);
-    // player[0] = player[0].toString();
-    // player[1] = player[1].toString();
-    console.log (player[0], player[1]);
+Tracker.prototype.pickPlayers = function() {
+//pick players
+   this.player = [0,0];
+  while (this.player[0] == this.player[1]) {
+    this.player[0] = Math.floor(Math.random()*14);
+    this.player[1] = Math.floor(Math.random()*14);
+    console.log (this.player[0], this.player[1]);
   }
-  var leftPicPlace = document.getElementById('player1');
-  var leftPicBox = document.createElement('div');
-  leftPicBox.innerHTML = "<img src=\"images/" + player[0] + ".jpg\"/>";
-  leftPicPlace.appendChild(leftPicBox);
-  leftPicPlace.addEventListener('click', victor="L");
-
-  var rightPicPlace = document.getElementById('player2');
-  var rightPicBox = document.createElement('div');
-  rightPicBox.innerHTML = "<img src=\"images/" + player[1] + ".jpg\"/>";
-  rightPicPlace.appendChild(rightPicBox);
-  rightPicPlace.addEventListener('click', victor="R");
-//  return player [0], player[1];
-  if (victor == "L") {
-    fight = false;
-    kitty[player[0]]++ ;
-    console.log(kitty);
-    while (leftPicPlace.firstChild) {
-      leftPicPlace.removeChild(leftPicPlace.firstChild);
-    }
-    while (rightPicPlace.firstChild) {
-    rightPicPlace.removeChild(rightPicPlace.firstChild);
-    }
-  beginTurn();
-  }
+return this.player;
 };
 
-beginTurn();
+//Render images
+Tracker.prototype.showCats = function() {
+  // this.leftPicPlace = document.getElementById('player1');
+  this.leftPicBox = document.createElement('div');
+  // this.rightPicPlace = document.getElementById('player2');
+  this.rightPicBox = document.createElement('div');
+  this.leftPicBox.innerHTML = "<img src=\"images/" + this.player[0] + ".jpg\"/>";
+  document.getElementById('player1').appendChild(this.leftPicBox);
+  this.rightPicBox.innerHTML = "<img src=\"images/" + this.player[1] + ".jpg\"/>";
+  document.getElementById('player2').appendChild(this.rightPicBox);
+};
 
+Tracker.prototype.getVote = function () {
+  document.getElementById('player1').addEventListener('click', function() {
+    this.kitty[this.player[0]]++;
+  });
+  document.getElementById('player2').addEventListener('click', function() {
+    this.kitty[this.player[1]]++;
+  });
+};
 
-// turn on listener to get clicks on pictures
-
-// after click, run tracker to add to score of winning kitty
-
-// set state to next battle
-
-// turn on listener for button to restart beginturn
-
-// }
-
-// ;
-
-
+var play = new Tracker();
+play.Contest();
