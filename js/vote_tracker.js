@@ -37,12 +37,21 @@ Tracker.prototype.getVote = function () {
     console.log ("after click R", play.kitty);
     play.Contest();
   });
-    // var cats = document.getElementById('cats').getContext('2d');
-    // new Chart(cats).Pie(playerData);
-    // var playerData = [
-    // {value: play.kitty[play.player[0]], "blue"}, 
-    // {value: play.kitty[play.player[1]], "red"}
-    // ];
+// bar chart data
+  var barData = {
+      labels : ["1","2","3","4","5","6", "7", "8", "9", "10", "11", "12", "13", "14"],
+      datasets : [
+          {
+              fillColor : "#48A497",
+              strokeColor : "#48A4D1",
+              data : play.kitty
+          },
+      ]
+  }
+  // get bar chart canvas
+  var cats = document.getElementById("cats").getContext("2d");
+  // draw bar chart
+  new Chart(cats).Bar(barData);
 };
 
 
