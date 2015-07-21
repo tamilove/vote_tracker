@@ -31,6 +31,9 @@ body {
 }
 
 .chart{
+  position: absolute;
+  width: 200px;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -38,17 +41,16 @@ body {
 #player1 {
   float: left;
   position: relative;
-  margin-left: 100px;
-  margin-top: 100px;
+  margin-left: 25px;
+  margin-top: 25px;
 }
 
 #player2 {
   float: right;
   position: relative;
-  margin-right: 100px;
-  margin-top: 100px;
+  margin-right: 25px;
+  margin-top: 25px;
 }
-
 #cats {
-  position: absolute;
+  
 }
