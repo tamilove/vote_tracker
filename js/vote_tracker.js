@@ -1,86 +1,79 @@
-//var kitty = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-var kitty = [];
-for (i=0; i<14; i++) {
-  kitty[i] = 0;
-};
-var player = [];
-var fight;
-var Tracker = function(){
-
+var Tracker = function () {
+  this.kitty = [];
+  this.player = [0,0];
 };
 
-var leftVictor = function() {
-  fight = false;
-  kitty[player[0]]++ ;
-  console.log(kitty);
-  while (leftPicPlace.firstChild) {
-    leftPicPlace.removeChild(leftPicPlace.firstChild);
-  };
-  while (rightPicPlace.firstChild) {
-    rightPicPlace.removeChild(rightPicPlace.firstChild);
-  };
-  beginTurn();
+Tracker.prototype.Contest = function() {
+  $('.cat_pic').children().remove();
+  this.pickPlayers();
+  this.getVote();
 };
 
-var rightVictor = function() {
-  fight = false;
-  kitty[player[1]]++ ;
-  console.log(kitty);
-  beginTurn();
-};
-
-var victor
-
-
-beginTurn = function() {
-   player = [0,0];
-
-  while (player[0] == player[1]) {
-    player[0] = Math.floor(Math.random()*14);
-    player[1] = Math.floor(Math.random()*14);
-    // player[0] = player[0].toString();
-    // player[1] = player[1].toString();
-    console.log (player[0], player[1]);
+Tracker.prototype.pickPlayers = function() {
+   this.player = [0,0];
+  while (this.player[0] == this.player[1]) {
+    this.player[0] = Math.floor(Math.random()*14);
+    this.player[1] = Math.floor(Math.random()*14);
   }
-  var leftPicPlace = document.getElementById('player1');
-  var leftPicBox = document.createElement('div');
-  leftPicBox.innerHTML = "<img src=\"images/" + player[0] + ".jpg\"/>";
-  leftPicPlace.appendChild(leftPicBox);
-  leftPicPlace.addEventListener('click', victor="L");
-
-  var rightPicPlace = document.getElementById('player2');
-  var rightPicBox = document.createElement('div');
-  rightPicBox.innerHTML = "<img src=\"images/" + player[1] + ".jpg\"/>";
-  rightPicPlace.appendChild(rightPicBox);
-  rightPicPlace.addEventListener('click', victor="R");
-//  return player [0], player[1];
-  if (victor == "L") {
-    fight = false;
-    kitty[player[0]]++ ;
-    console.log(kitty);
-    while (leftPicPlace.firstChild) {
-      leftPicPlace.removeChild(leftPicPlace.firstChild);
-    }
-    while (rightPicPlace.firstChild) {
-    rightPicPlace.removeChild(rightPicPlace.firstChild);
-    }
-  beginTurn();
-  }
+  $('#player1').append("<img id=\"left\" src=\"images/" + this.player[0] + ".jpg\"/><br><br><p>Cat " + (this.player[0] + 1) + "</p>");
+  $('#player2').append("<img id=\"right\" src=\"images/" + this.player[1] + ".jpg\"/><br><br><p>Cat " + (this.player[1] + 1) + "</p>");
+return this.player;
 };
 
-beginTurn();
+Tracker.prototype.getVote = function () {
+  $('#left').on({'click': function() {
+    play.kitty[play.player[0]]++;
+    console.log ("after click L", play.kitty)
+    saveGame();
+    play.Contest();
+    }
+  });
+  $('#right').on({'click': function() {
+    play.kitty[play.player[1]] ++;
+    console.log ("after click R", play.kitty);
+    saveGame();
+    play.Contest();
+    }
+  });
+};
 
+var renderChart = function() {
+  var barData = {
+      labels : ["1","2","3","4","5","6", "7", "8", "9", "10", "11", "12", "13", "14"],
+      datasets : [
+          {
+              fillColor : "#48A497",
+              strokeColor : "#48A4D1",
+              data : play.kitty
+          },
+      ]
+  }
+  // get bar chart canvas
+  var cats = $("#cats")[0].getContext("2d");
+  // draw bar chart
+  new Chart(cats).Bar(barData);
+};
 
-// turn on listener to get clicks on pictures
+var saveGame = function() {
+  var cuteCatSession = JSON.stringify(play.kitty)
+  localStorage.cuteCatSession = cuteCatSession;
+  renderChart();
+};
 
-// after click, run tracker to add to score of winning kitty
-
-// set state to next battle
-
-// turn on listener for button to restart beginturn
-
-// }
-
-// ;
-
-
+var play = new Tracker();
+$('#reset').on({'click': function() {
+      for (var i=0; i<14; i++) {
+      play.kitty[i] = 0;
+    }
+    saveGame();
+  }
+});
+if (localStorage.cuteCatSession) {
+  play.kitty = JSON.parse(localStorage.cuteCatSession);
+} else {
+  for (var i=0; i<14; i++) {
+    play.kitty[i] = 0;
+  }
+};
+renderChart();
+play.Contest();
