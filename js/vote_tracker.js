@@ -23,12 +23,16 @@ return this.player;
 Tracker.prototype.getVote = function () {
   $('#left').on({'click': function() {
     play.kitty[play.player[0]]++;
-    console.log ("after click L", play.kitty);
+    console.log ("after click L", play.kitty)
+    var cuteCatSession = JSON.stringify(play.kitty)
+    localStorage.cuteCatSession = cuteCatSession;
     play.Contest(); }
   });
   $('#right').on({'click': function() {
     play.kitty[play.player[1]] ++;
     console.log ("after click R", play.kitty);
+    var cuteCatSession = JSON.stringify(play.kitty)
+    localStorage.cuteCatSession = cuteCatSession;
     play.Contest(); }
   });
 // bar chart data
@@ -49,7 +53,11 @@ Tracker.prototype.getVote = function () {
 };
 
 var play = new Tracker();
-for (var i=0; i<14; i++) {
-  play.kitty[i] = 0;
+if (localStorage.cuteCatSession) {
+  play.kitty = JSON.parse(localStorage.cuteCatSession);
+} else {
+  for (var i=0; i<14; i++) {
+    play.kitty[i] = 0;
+  }
 };
 play.Contest();
